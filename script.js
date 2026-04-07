@@ -385,6 +385,12 @@ function createBlueprintItem(blueprint) {
      clearTimeout(touchTimer);
    });
 
+   // Prevent context menu on long-press
+   item.addEventListener('contextmenu', (e) => {
+     e.preventDefault();
+     return false;
+   });
+
    // Hide tooltip when clicking elsewhere
    document.addEventListener('click', (e) => {
      if (!e.target.closest('.blueprint-item')) {
