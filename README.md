@@ -26,7 +26,7 @@ npm install
 
 1. Create a free account at [supabase.com](https://supabase.com)
 2. Create a new project
-3. Create two tables:
+3. Create the required tables:
 
 **users table:**
 ```sql
@@ -60,7 +60,7 @@ CREATE TABLE user_blueprints (
 ```
 
 4. Copy your Supabase URL and Anon Key from Settings → API
-5. Create `public/config.js` (copy from `config.example.js`):
+5. Create `config.js` in the root directory:
 
 ```javascript
 const SUPABASE_CONFIG = {
@@ -69,19 +69,7 @@ const SUPABASE_CONFIG = {
 };
 ```
 
-### 3. Import Blueprint Data
-
-Run the scraper to fetch real data from Arc Raiders wiki:
-
-```bash
-node scrape-blueprints-real.js
-```
-
-Then manually import the data into Supabase:
-- Open Supabase → blueprints table
-- Import the data from `public/blueprints.json`
-
-### 4. Deploy to GitHub Pages
+### 3. Deploy to GitHub Pages
 
 1. Update repository URL in `package.json`
 2. Push to GitHub:
@@ -103,15 +91,17 @@ Your site will be live at `https://yourusername.github.io/blueprints-tracker/`
 
 ```
 blueprints-tracker/
-├── public/
-│   ├── index.html          # Main HTML
-│   ├── styles.css          # Mobile-first CSS
-│   ├── script.js           # Frontend logic
-│   ├── config.example.js   # Supabase config template
-│   ├── blueprints.json     # Blueprint data (auto-generated)
-│   └── images/
-│       └── blueprints/     # Blueprint icons (auto-generated)
-├── scrape-blueprints-real.js  # Wiki scraper
+├── index.html              # Main HTML page
+├── styles.css              # Mobile-first CSS
+├── script.js               # Frontend logic
+├── config.js               # Supabase configuration (create this file)
+├── blueprints.json         # Blueprint data (77 blueprints)
+├── images/
+│   ├── blueprint-background.png
+│   └── blueprints/         # 77 blueprint PNG icons
+├── README.md               # This file
+├── QUICKSTART.md           # Quick start guide
+├── IMPLEMENTATION.md       # Technical details
 └── package.json
 ```
 
@@ -147,29 +137,20 @@ blueprints-tracker/
 
 ```bash
 # With Node.js http-server
-npx http-server public -p 8080 -o
+npx http-server . -p 8080 -o
 
 # Or use any local server
-python -m http.server 8000 --directory public
+python -m http.server 8000
 ```
-
-### Update Blueprints from Wiki
-
-```bash
-node scrape-blueprints-real.js
-```
-
-Then re-import `public/blueprints.json` to Supabase.
-
 ## Troubleshooting
 
 **Blueprints not loading?**
 - Check browser console for errors (F12)
-- Verify `public/blueprints.json` exists
-- Check that `public/images/blueprints/` has SVG files
+- Verify `blueprints.json` exists in root
+- Check that `images/blueprints/` folder has 77 PNG files
 
 **Supabase not saving?**
-- Verify `public/config.js` exists with correct credentials
+- Verify `config.js` exists in root with correct credentials
 - Check Supabase project is active
 - View Supabase logs in Settings → Logs
 
