@@ -12,12 +12,14 @@
     "type": "git",
     "url": "https://github.com/yourusername/blueprints-tracker"
   },
-  "keywords": ["arc-raiders", "blueprints", "tracker"],
+  "keywords": [
+    "arc-raiders",
+    "blueprints",
+    "tracker"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0"
-  },
-  "devDependencies": {}
+    "@supabase/supabase-js": "^2.102.0"
+  }
 }
-
