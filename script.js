@@ -8,29 +8,28 @@ const USERS = ['aleks', 'rudi', 'publicsweatyvoid'];
 // Don't declare as 'let supabase' because the library already creates window.supabase
 
 function getSupabase() {
-  if (typeof SUPABASE_CONFIG !== 'undefined' && typeof window.supabase !== 'undefined') {
-    // Create client if not already created
-    if (!window.supabaseClient) {
-      try {
-        const { createClient } = window.supabase;
-        window.supabaseClient = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
-        console.log('✓ Supabase client created');
-      } catch (error) {
-        console.error('Failed to create Supabase client:', error);
-        return null;
-      }
-    }
-    return window.supabaseClient;
-  }
-  return null;
-}
+   if (typeof SUPABASE_CONFIG !== 'undefined' && typeof window.supabase !== 'undefined') {
+     // Create client if not already created
+     if (!window.supabaseClient) {
+       try {
+         const { createClient } = window.supabase;
+         window.supabaseClient = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+       } catch (error) {
+         console.error('Failed to create Supabase client:', error);
+         return null;
+       }
+     }
+     return window.supabaseClient;
+   }
+   return null;
+ }
 
 // App state
 let appState = {
   blueprints: [],
   currentUser: null,
   userBlueprintsOwned: {}, // { user: { blueprintId: boolean } }
-  viewMode: 'my-blueprints', // 'my-blueprints' or 'other-users'
+  viewMode: 'my-blueprints', // 'my-blueprints', 'missing', or 'other-users'
   filterUser: null // For 'other-users' mode
 };
 
@@ -46,78 +45,61 @@ let userRadios;
 let viewToggleButtons;
 
 function initDOMElements() {
-  statusText = document.getElementById('status-text');
-  blueprintsContainer = document.getElementById('blueprints-container');
-  loadingSpinner = document.getElementById('loading');
-  errorDiv = document.getElementById('error');
-  userRadios = document.querySelectorAll('input[name="user"]');
-  viewToggleButtons = document.querySelectorAll('.toggle-btn');
-
-  console.log('✓ DOM elements initialized');
-  console.log('  - statusText:', !!statusText);
-  console.log('  - blueprintsContainer:', !!blueprintsContainer);
-  console.log('  - loadingSpinner:', !!loadingSpinner);
-  console.log('  - errorDiv:', !!errorDiv);
-  console.log('  - userRadios count:', userRadios.length);
-  console.log('  - viewToggleButtons count:', viewToggleButtons.length);
-}
+   statusText = document.getElementById('status-text');
+   blueprintsContainer = document.getElementById('blueprints-container');
+   loadingSpinner = document.getElementById('loading');
+   errorDiv = document.getElementById('error');
+   userRadios = document.querySelectorAll('input[name="user"]');
+   viewToggleButtons = document.querySelectorAll('.toggle-btn');
+ }
 
 // ============================================================================
 // Initialization
 // ============================================================================
 
 async function init() {
-  try {
-    // Initialize DOM elements first
-    initDOMElements();
+   try {
+     // Initialize DOM elements first
+     initDOMElements();
 
-    showLoading(true);
-    console.log('Init starting...');
+     showLoading(true);
 
-    // Load blueprint data (use relative path for GitHub Pages compatibility)
-    console.log('Fetching blueprints.json...');
-    const blueprintsResponse = await fetch('./blueprints.json');
-    console.log('Blueprint response status:', blueprintsResponse.status);
-    if (!blueprintsResponse.ok) throw new Error(`Failed to load blueprints.json: ${blueprintsResponse.status}`);
-    appState.blueprints = await blueprintsResponse.json();
-    console.log('✓ Blueprints loaded:', appState.blueprints.length);
+     // Load blueprint data (use relative path for GitHub Pages compatibility)
+     const blueprintsResponse = await fetch('./blueprints.json');
+     if (!blueprintsResponse.ok) throw new Error(`Failed to load blueprints.json: ${blueprintsResponse.status}`);
+     appState.blueprints = await blueprintsResponse.json();
 
-    // Initialize user blueprint ownership maps
-    USERS.forEach(user => {
-      appState.userBlueprintsOwned[user] = {};
-      appState.blueprints.forEach(bp => {
-        appState.userBlueprintsOwned[user][bp.id] = false;
-      });
-    });
-    console.log('✓ User maps initialized');
+     // Initialize user blueprint ownership maps
+     USERS.forEach(user => {
+       appState.userBlueprintsOwned[user] = {};
+       appState.blueprints.forEach(bp => {
+         appState.userBlueprintsOwned[user][bp.id] = false;
+       });
+     });
 
-    // Load user data from Supabase (with timeout)
-    console.log('Loading user data from Supabase...');
-    const supabaseLoadPromise = loadUserBlueprintsFromSupabase();
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000)); // 3 second timeout
-    await Promise.race([supabaseLoadPromise, timeoutPromise]);
-    console.log('✓ Supabase data loaded (or timeout)');
+     // Load user data from Supabase (with timeout)
+     const supabaseLoadPromise = loadUserBlueprintsFromSupabase();
+     const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000)); // 3 second timeout
+     await Promise.race([supabaseLoadPromise, timeoutPromise]);
 
-    // Set up event listeners
-    setupEventListeners();
-    console.log('✓ Event listeners set up');
+     // Set up event listeners
+     setupEventListeners();
 
-    // Set initial user if not selected
-    if (!appState.currentUser) {
-      appState.currentUser = USERS[0];
-      userRadios[0].checked = true;
-    }
+     // Set initial user if not selected
+     if (!appState.currentUser) {
+       appState.currentUser = USERS[0];
+       userRadios[0].checked = true;
+     }
 
-    showLoading(false);
-    console.log('✓ Init complete, rendering...');
-    render();
+     showLoading(false);
+     render();
 
-  } catch (error) {
-    console.error('✗ Init error:', error);
-    showLoading(false);
-    showError(`Initialization error: ${error.message}`);
-  }
-}
+   } catch (error) {
+     console.error('Initialization error:', error);
+     showLoading(false);
+     showError(`Initialization error: ${error.message}`);
+   }
+ }
 
 // ============================================================================
 // Supabase Functions
@@ -188,50 +170,43 @@ async function saveBlueprintToSupabase(userId, blueprintId, owned) {
 // ============================================================================
 
 function setupEventListeners() {
-  // User selection
-  userRadios.forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      appState.currentUser = e.target.value;
-      appState.viewMode = 'my-blueprints';
-      appState.filterUser = null;
-      updateViewToggleButtons();
-      render();
-    });
-  });
+   // User selection
+   userRadios.forEach(radio => {
+     radio.addEventListener('change', (e) => {
+       appState.currentUser = e.target.value;
+       // Keep the current view mode (don't reset to my-blueprints)
+       appState.filterUser = null;
+       updateViewToggleButtons();
+       render();
+     });
+   });
 
-  // View toggle buttons
-  viewToggleButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const newView = e.target.getAttribute('data-view');
-      appState.viewMode = newView;
+     // Missing blueprints toggle button - using event delegation
+   document.addEventListener('click', (e) => {
+     if (e.target && e.target.id === 'missing-btn') {
+       e.preventDefault();
+       // Toggle between my-blueprints and missing modes
+       appState.viewMode = appState.viewMode === 'missing' ? 'my-blueprints' : 'missing';
+       updateViewToggleButtons();
+       render();
+     }
+   });
 
-      if (newView === 'other-users') {
-        // Default to first other user
-        appState.filterUser = USERS.find(u => u !== appState.currentUser) || USERS[0];
-      } else {
-        appState.filterUser = null;
-      }
-
-      updateViewToggleButtons();
-      render();
-    });
-  });
-
-  // Blueprint item clicks - handled in renderBlueprints
-}
+   // Blueprint item clicks - handled in renderBlueprints
+ }
 
 function updateViewToggleButtons() {
-  viewToggleButtons.forEach(btn => {
-    const view = btn.getAttribute('data-view');
-    if (view === appState.viewMode) {
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
-    } else {
-      btn.classList.remove('active');
-      btn.setAttribute('aria-pressed', 'false');
-    }
-  });
-}
+   const missingBtn = document.getElementById('missing-btn');
+   if (missingBtn) {
+     if (appState.viewMode === 'missing') {
+       missingBtn.classList.add('active');
+       missingBtn.setAttribute('aria-pressed', 'true');
+     } else {
+       missingBtn.classList.remove('active');
+       missingBtn.setAttribute('aria-pressed', 'false');
+     }
+   }
+ }
 
 // ============================================================================
 // Rendering
@@ -243,23 +218,22 @@ function render() {
 }
 
 function updateStatusMessage() {
-  if (!appState.currentUser) {
-    statusText.textContent = 'Select a user to get started';
-    return;
-  }
+   if (!appState.currentUser) {
+     statusText.textContent = 'Select a user to get started';
+     return;
+   }
 
-  if (appState.viewMode === 'my-blueprints') {
-    const owned = Object.values(appState.userBlueprintsOwned[appState.currentUser])
-      .filter(Boolean).length;
-    statusText.textContent = `${appState.currentUser} - ${owned} blueprint(s) checked`;
-  } else {
-    const filterName = appState.filterUser || 'user';
-    const hasNotChecked = appState.blueprints.filter(bp =>
-      !appState.userBlueprintsOwned[appState.filterUser][bp.id]
-    ).length;
-    statusText.textContent = `Showing ${hasNotChecked} blueprint(s) ${appState.filterUser} hasn't checked`;
-  }
-}
+   if (appState.viewMode === 'my-blueprints') {
+     const owned = Object.values(appState.userBlueprintsOwned[appState.currentUser])
+       .filter(Boolean).length;
+     statusText.textContent = `${appState.currentUser} - ${owned} blueprint(s) owned`;
+   } else if (appState.viewMode === 'missing') {
+     const missing = appState.blueprints.filter(bp =>
+       !appState.userBlueprintsOwned[appState.currentUser][bp.id]
+     ).length;
+     statusText.textContent = `${appState.currentUser} - ${missing} blueprint(s) missing`;
+   }
+ }
 
 function renderBlueprints() {
    blueprintsContainer.innerHTML = '';
@@ -281,23 +255,30 @@ function renderBlueprints() {
     const rarityGroup = document.createElement('div');
     rarityGroup.className = 'blueprint-rarity-group';
 
-    // Create rarity title
-    const rarityTitle = document.createElement('h2');
-    rarityTitle.className = `blueprint-rarity-title ${rarity.toLowerCase()}`;
-    rarityTitle.textContent = `${rarity} (${blueprintsInRarity.length})`;
-    rarityGroup.appendChild(rarityTitle);
-
     // Create blueprint grid for this rarity
     const grid = document.createElement('div');
     grid.className = 'blueprint-grid';
 
     // Filter blueprints based on view mode
     let filteredBlueprints = blueprintsInRarity;
-    if (appState.viewMode === 'other-users' && appState.filterUser) {
+    if (appState.viewMode === 'missing' && appState.currentUser) {
+      filteredBlueprints = blueprintsInRarity.filter(bp =>
+        !appState.userBlueprintsOwned[appState.currentUser][bp.id]
+      );
+    } else if (appState.viewMode === 'other-users' && appState.filterUser) {
       filteredBlueprints = blueprintsInRarity.filter(bp =>
         !appState.userBlueprintsOwned[appState.filterUser][bp.id]
       );
     }
+
+    // Only render rarity group if there are blueprints to show
+    if (filteredBlueprints.length === 0) return;
+
+    // Create rarity title
+    const rarityTitle = document.createElement('h2');
+    rarityTitle.className = `blueprint-rarity-title ${rarity.toLowerCase()}`;
+    rarityTitle.textContent = `${rarity} (${filteredBlueprints.length})`;
+    rarityGroup.appendChild(rarityTitle);
 
     // Render each blueprint
     filteredBlueprints.forEach(blueprint => {
@@ -329,41 +310,89 @@ function createBlueprintItem(blueprint) {
     item.classList.add(ownerClass);
   }
 
-  // Icon image
-  const icon = document.createElement('img');
-  icon.className = 'blueprint-icon';
-  icon.src = blueprint.icon_path;
-  icon.alt = blueprint.name;
-  item.appendChild(icon);
+   // Icon image
+   const icon = document.createElement('img');
+   icon.className = 'blueprint-icon';
+   icon.src = blueprint.icon_path;
+   icon.alt = blueprint.name;
+   item.appendChild(icon);
 
-  // Checkbox overlay
-  const checkbox = document.createElement('div');
-  checkbox.className = 'blueprint-checkbox';
-  if (isOwned) checkbox.classList.add('checked');
-  checkbox.textContent = isOwned ? '✓' : '';
-  item.appendChild(checkbox);
+   // Checkbox overlay
+   const checkbox = document.createElement('div');
+   checkbox.className = 'blueprint-checkbox';
+   if (isOwned) checkbox.classList.add('checked');
+   checkbox.textContent = isOwned ? '✓' : '';
+   item.appendChild(checkbox);
 
-  // Blueprint name tooltip
-  const title = document.createElement('div');
-  title.className = 'blueprint-title';
-  title.textContent = blueprint.name;
-  item.appendChild(title);
+   // Blueprint name label under icon
+   const label = document.createElement('div');
+   label.className = 'blueprint-label';
+   label.textContent = blueprint.name;
+   item.appendChild(label);
 
-  // Click handler
-  item.addEventListener('click', async () => {
-    if (!appState.currentUser) return;
+   // Blueprint name tooltip
+   const title = document.createElement('div');
+   title.className = 'blueprint-title';
+   title.textContent = blueprint.name;
+   item.appendChild(title);
 
-    const newOwned = !appState.userBlueprintsOwned[appState.currentUser][blueprint.id];
-    appState.userBlueprintsOwned[appState.currentUser][blueprint.id] = newOwned;
+   // Click handler for desktop and mobile
+   item.addEventListener('click', async () => {
+     if (!appState.currentUser) return;
 
-    // Save to Supabase
-    await saveBlueprintToSupabase(appState.currentUser, blueprint.id, newOwned);
+     const newOwned = !appState.userBlueprintsOwned[appState.currentUser][blueprint.id];
+     appState.userBlueprintsOwned[appState.currentUser][blueprint.id] = newOwned;
 
-    // Re-render
-    render();
-  });
+     // Save to Supabase
+     await saveBlueprintToSupabase(appState.currentUser, blueprint.id, newOwned);
 
-  return item;
+     // Re-render
+     render();
+   });
+
+   // Long-press handler for mobile tooltip
+   let touchTimer;
+   item.addEventListener('touchstart', (e) => {
+     touchTimer = setTimeout(() => {
+       // Show large popup on long-press
+       const popup = document.createElement('div');
+       popup.className = 'blueprint-popup';
+       popup.textContent = blueprint.name;
+       document.body.appendChild(popup);
+
+       // Hide popup on tap or after timeout
+       const hidePopup = () => {
+         popup.remove();
+         document.removeEventListener('click', hidePopup);
+         document.removeEventListener('touchstart', hidePopup);
+       };
+
+       document.addEventListener('click', hidePopup);
+       document.addEventListener('touchstart', hidePopup);
+
+       // Auto-hide after 5 seconds
+       setTimeout(() => {
+         if (popup.parentNode) popup.remove();
+       }, 5000);
+     }, 500); // 500ms long-press
+   });
+
+   item.addEventListener('touchend', () => {
+     clearTimeout(touchTimer);
+   });
+
+   item.addEventListener('touchmove', () => {
+     clearTimeout(touchTimer);
+   });
+
+   // Hide tooltip when clicking elsewhere
+   document.addEventListener('click', (e) => {
+     if (!e.target.closest('.blueprint-item')) {
+       document.querySelectorAll('.blueprint-item').forEach(i => i.classList.remove('show-title'));
+     }
+   });
+
+   return item;
 }
 
 // ============================================================================
