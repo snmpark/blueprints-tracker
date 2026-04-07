@@ -42,8 +42,8 @@ async function init() {
   try {
     showLoading(true);
 
-    // Load blueprint data
-    const blueprintsResponse = await fetch('/blueprints.json');
+    // Load blueprint data (use relative path for GitHub Pages compatibility)
+    const blueprintsResponse = await fetch('./blueprints.json');
     if (!blueprintsResponse.ok) throw new Error('Failed to load blueprints.json');
     appState.blueprints = await blueprintsResponse.json();
 
@@ -81,6 +81,11 @@ async function init() {
 // ============================================================================
 
 async function loadUserBlueprintsFromSupabase() {
+  if (!supabase) {
+    console.warn('Supabase not configured, using local state only');
+    return;
+  }
+
   try {
     // Fetch all user blueprints from Supabase
     const { data, error } = await supabase
@@ -106,6 +111,11 @@ async function loadUserBlueprintsFromSupabase() {
 }
 
 async function saveBlueprintToSupabase(userId, blueprintId, owned) {
+  if (!supabase) {
+    console.warn('Supabase not configured, changes are local only');
+    return;
+  }
+
   try {
     const { error } = await supabase
       .from('user_blueprints')
