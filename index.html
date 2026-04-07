@@ -32,13 +32,16 @@
 
        <div class="view-toggle" role="group" aria-label="View filter">
          <button class="toggle-btn" id="missing-btn" type="button" data-view="missing" aria-pressed="false">Missing Blueprints</button>
+         <button class="toggle-btn" id="unlock-btn" type="button" aria-pressed="false" title="Unlock to allow changes">🔒 Locked</button>
        </div>
 
        <div class="status-message" aria-live="polite" aria-atomic="true">
          <p id="status-text">Select a user to get started</p>
        </div>
-     </div>
-   </header>
+
+        <button class="changelog-btn" id="changelog-btn" type="button" title="View changelog" aria-label="View changelog">📋 Changelog</button>
+      </div>
+    </header>
 
    <main class="main-content" role="main">
     <div id="blueprints-container" class="blueprints-container">
@@ -53,7 +56,21 @@
     <div id="error" class="error-message" hidden role="alert">
       <!-- Error messages will be displayed here -->
     </div>
-  </main>
+
+    <!-- Changelog Popup Modal -->
+    <div id="changelog-modal" class="modal" hidden>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Changelog</h2>
+          <button class="modal-close" id="changelog-close" type="button" aria-label="Close changelog">✕</button>
+        </div>
+        <div class="modal-body">
+          <div id="changelog-content">
+            <p>Loading changelog...</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script src="config.js"></script>
   <script src="script.js"></script>

@@ -21,8 +21,54 @@ function getSupabase() {
      }
      return window.supabaseClient;
    }
-   return null;
- }
+    return null;
+  }
+
+// Get latest commit information from GitHub API
+async function getLatestCommitInfo() {
+  const owner = 'snmpark';
+  const repo = 'blueprints-tracker';
+  const branch = 'main';
+
+  try {
+    // Fetch from GitHub API
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`,
+      {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        hash: data.sha.substring(0, 7),
+        message: data.commit.message, // Full message with body
+        date: new Date(data.commit.author.date).toLocaleString(),
+        author: data.commit.author.name,
+        url: data.html_url
+      };
+    } else if (response.status === 403) {
+      console.warn('GitHub API rate limited or no auth');
+    }
+  } catch (error) {
+    console.log('Failed to fetch from GitHub API:', error.message);
+  }
+
+  // Fallback: try to get from git info file if it exists
+  try {
+    const response = await fetch('./git-info.json');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.log('Git info file not available');
+  }
+
+  return null;
+}
 
 // App state
 let appState = {
@@ -30,7 +76,8 @@ let appState = {
   currentUser: null,
   userBlueprintsOwned: {}, // { user: { blueprintId: boolean } }
   viewMode: 'my-blueprints', // 'my-blueprints', 'missing', or 'other-users'
-  filterUser: null // For 'other-users' mode
+  filterUser: null, // For 'other-users' mode
+  isLocked: true // Lock state to prevent accidental changes
 };
 
 // ============================================================================
@@ -177,26 +224,53 @@ function setupEventListeners() {
        // Keep the current view mode (don't reset to my-blueprints)
        appState.filterUser = null;
        updateViewToggleButtons();
-       render();
+       updateBlueprintOwnershipDisplay();
+       updateStatusMessage();
      });
    });
 
-     // Missing blueprints toggle button - using event delegation
-   document.addEventListener('click', (e) => {
-     if (e.target && e.target.id === 'missing-btn') {
-       e.preventDefault();
-       // Toggle between my-blueprints and missing modes
-       appState.viewMode = appState.viewMode === 'missing' ? 'my-blueprints' : 'missing';
-       updateViewToggleButtons();
-       render();
-     }
-   });
+      // Missing blueprints toggle button - using event delegation
+    document.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'missing-btn') {
+        e.preventDefault();
+        // Toggle between my-blueprints and missing modes
+        appState.viewMode = appState.viewMode === 'missing' ? 'my-blueprints' : 'missing';
+        updateViewToggleButtons();
+        render();
+      }
+
+       // Unlock button toggle
+       if (e.target && e.target.id === 'unlock-btn') {
+         e.preventDefault();
+         appState.isLocked = !appState.isLocked;
+         updateViewToggleButtons();
+       }
+
+       // Changelog button
+       if (e.target && e.target.id === 'changelog-btn') {
+         e.preventDefault();
+         showChangelogModal();
+       }
+
+       // Close changelog modal
+       if (e.target && e.target.id === 'changelog-close') {
+         e.preventDefault();
+         closeChangelogModal();
+       }
+
+       // Close modal if clicking outside
+       if (e.target && e.target.id === 'changelog-modal') {
+         closeChangelogModal();
+       }
+     });
 
    // Blueprint item clicks - handled in renderBlueprints
  }
 
 function updateViewToggleButtons() {
    const missingBtn = document.getElementById('missing-btn');
+   const unlockBtn = document.getElementById('unlock-btn');
+
    if (missingBtn) {
      if (appState.viewMode === 'missing') {
        missingBtn.classList.add('active');
@@ -206,7 +280,92 @@ function updateViewToggleButtons() {
        missingBtn.setAttribute('aria-pressed', 'false');
      }
    }
+
+   if (unlockBtn) {
+     if (appState.isLocked) {
+       unlockBtn.classList.remove('active');
+       unlockBtn.setAttribute('aria-pressed', 'false');
+       unlockBtn.textContent = '🔒 Locked';
+       unlockBtn.title = 'Click to unlock and allow changes';
+     } else {
+       unlockBtn.classList.add('active');
+       unlockBtn.setAttribute('aria-pressed', 'true');
+       unlockBtn.textContent = '🔓 Unlocked';
+       unlockBtn.title = 'Click to lock and prevent accidental changes';
+     }
+   }
  }
+
+function updateBlueprintOwnershipDisplay() {
+  if (!appState.currentUser) return;
+
+  const allItems = document.querySelectorAll('.blueprint-item');
+  allItems.forEach(item => {
+    const blueprintId = parseInt(item.dataset.blueprintId);
+    const isOwned = appState.userBlueprintsOwned[appState.currentUser][blueprintId];
+
+    // Remove all user-specific classes
+    item.classList.remove('owned-aleks', 'owned-rudi', 'owned-publicsweatyvoid');
+
+    // Update checkbox
+    const checkbox = item.querySelector('.blueprint-checkbox');
+    if (isOwned) {
+      item.classList.add(`owned-${appState.currentUser}`);
+      checkbox.classList.add('checked');
+      checkbox.textContent = '✓';
+    } else {
+      checkbox.classList.remove('checked');
+      checkbox.textContent = '';
+    }
+  });
+}
+
+async function showChangelogModal() {
+  const modal = document.getElementById('changelog-modal');
+  const content = document.getElementById('changelog-content');
+
+  if (!modal) return;
+
+  // Show loading state
+  content.innerHTML = '<p>Loading changelog from GitHub...</p>';
+  modal.removeAttribute('hidden');
+
+  // Fetch commit info
+  const commitInfo = await getLatestCommitInfo();
+
+  if (commitInfo) {
+    const commitLink = commitInfo.url
+      ? `<a href="${commitInfo.url}" target="_blank" rel="noopener noreferrer" class="commit-link">View Commit on GitHub ↗</a>`
+      : '';
+
+    content.innerHTML = `
+      <div class="changelog-item">
+        <p>${escapeHtml(commitInfo.message).replace(/\n/g, '<br>')}</p>
+        ${commitLink}
+      </div>
+    `;
+  } else {
+    content.innerHTML = '<p>Unable to load changelog from GitHub API.</p>';
+  }
+}
+
+function closeChangelogModal() {
+  const modal = document.getElementById('changelog-modal');
+  if (modal) {
+    modal.setAttribute('hidden', '');
+  }
+}
+
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
 
 // ============================================================================
 // Rendering
@@ -300,11 +459,12 @@ function renderBlueprints() {
 }
 
 function createBlueprintItem(blueprint) {
-  const item = document.createElement('div');
-  item.className = 'blueprint-item';
+   const item = document.createElement('div');
+   item.className = 'blueprint-item';
+   item.dataset.blueprintId = blueprint.id;
 
-  const isOwned = appState.userBlueprintsOwned[appState.currentUser][blueprint.id];
-  const ownerClass = appState.currentUser ? `owned-${appState.currentUser}` : '';
+   const isOwned = appState.userBlueprintsOwned[appState.currentUser][blueprint.id];
+   const ownerClass = appState.currentUser ? `owned-${appState.currentUser}` : '';
 
   if (isOwned) {
     item.classList.add(ownerClass);
@@ -340,14 +500,25 @@ function createBlueprintItem(blueprint) {
    item.addEventListener('click', async () => {
      if (!appState.currentUser) return;
 
+     // Prevent changes if locked
+     if (appState.isLocked) {
+       // Show visual feedback that it's locked
+       item.classList.add('locked-flash');
+       setTimeout(() => {
+         item.classList.remove('locked-flash');
+       }, 300);
+       return;
+     }
+
      const newOwned = !appState.userBlueprintsOwned[appState.currentUser][blueprint.id];
      appState.userBlueprintsOwned[appState.currentUser][blueprint.id] = newOwned;
 
      // Save to Supabase
      await saveBlueprintToSupabase(appState.currentUser, blueprint.id, newOwned);
 
-     // Re-render
-     render();
+     // Update only the checkbox and ownership display (no full re-render)
+     updateBlueprintOwnershipDisplay();
+     updateStatusMessage();
    });
 
    // Long-press handler for mobile tooltip
