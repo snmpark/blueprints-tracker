@@ -1,0 +1,23 @@
+{
+  "name": "blueprints-tracker",
+  "version": "1.0.0",
+  "description": "Arc Raiders Blueprint Tracker - Mobile-first GitHub Pages site to track blueprint ownership across users",
+  "main": "index.js",
+  "scripts": {
+    "scrape": "node scrape-blueprints.js",
+    "dev": "npx http-server ./public -p 8080 -o",
+    "build": "npm run scrape"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/blueprints-tracker"
+  },
+  "keywords": ["arc-raiders", "blueprints", "tracker"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {}
+}
+
