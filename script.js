@@ -262,10 +262,10 @@ function updateStatusMessage() {
 }
 
 function renderBlueprints() {
-  blueprintsContainer.innerHTML = '';
+   blueprintsContainer.innerHTML = '';
 
-  const rarityOrder = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
-  const blueprintsByRarity = {};
+   const rarityOrder = ['Legendary', 'Epic', 'Rare', 'Uncommon', 'Common'];
+   const blueprintsByRarity = {};
 
   // Group blueprints by rarity
   rarityOrder.forEach(rarity => {
