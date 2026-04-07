@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Arc Raiders Blueprint Tracker - Track which blueprints you and your friends own">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Arc Raiders Blueprint Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header" role="banner">
+    <div class="header-content">
+      <h1 class="logo">Arc Raiders Blueprints</h1>
+
+      <div class="user-selector" role="group" aria-label="Select your user">
+        <label class="radio-label">
+          <input type="radio" name="user" value="aleks" class="radio-input">
+          <span class="radio-text">Aleks</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="user" value="rudi" class="radio-input">
+          <span class="radio-text">Rudi</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="user" value="publicsweatyvoid" class="radio-input">
+          <span class="radio-text">Public Sweaty Void</span>
+        </label>
+      </div>
+
+      <div class="view-toggle" role="group" aria-label="Select view mode">
+        <button class="toggle-btn active" data-view="my-blueprints" aria-pressed="true">
+          My Blueprints
+        </button>
+        <button class="toggle-btn" data-view="other-users" aria-pressed="false">
+          Other Users
+        </button>
+      </div>
+
+      <div class="status-message" aria-live="polite" aria-atomic="true">
+        <p id="status-text">Select a user to get started</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content" role="main">
+    <div id="blueprints-container" class="blueprints-container">
+      <!-- Blueprints will be rendered here by JavaScript -->
+    </div>
+
+    <div id="loading" class="loading-spinner" hidden>
+      <div class="spinner"></div>
+      <p>Loading blueprints...</p>
+    </div>
+
+    <div id="error" class="error-message" hidden role="alert">
+      <!-- Error messages will be displayed here -->
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
