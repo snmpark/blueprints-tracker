@@ -4,14 +4,25 @@
 
 const USERS = ['aleks', 'rudi', 'publicsweatyvoid'];
 
-// NOTE: Create a config.js file in the same directory with your Supabase credentials
-// See config.example.js for the template
-let supabase = null;
+// Supabase instance (initialized after library loads)
+// Don't declare as 'let supabase' because the library already creates window.supabase
 
-// Initialize Supabase if config is available
-if (typeof SUPABASE_CONFIG !== 'undefined') {
-  const { createClient } = window.supabase;
-  supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+function getSupabase() {
+  if (typeof SUPABASE_CONFIG !== 'undefined' && typeof window.supabase !== 'undefined') {
+    // Create client if not already created
+    if (!window.supabaseClient) {
+      try {
+        const { createClient } = window.supabase;
+        window.supabaseClient = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+        console.log('✓ Supabase client created');
+      } catch (error) {
+        console.error('Failed to create Supabase client:', error);
+        return null;
+      }
+    }
+    return window.supabaseClient;
+  }
+  return null;
 }
 
 // App state
@@ -27,12 +38,29 @@ let appState = {
 // DOM Elements
 // ============================================================================
 
-const statusText = document.getElementById('status-text');
-const blueprintsContainer = document.getElementById('blueprints-container');
-const loadingSpinner = document.getElementById('loading');
-const errorDiv = document.getElementById('error');
-const userRadios = document.querySelectorAll('input[name="user"]');
-const viewToggleButtons = document.querySelectorAll('.toggle-btn');
+let statusText;
+let blueprintsContainer;
+let loadingSpinner;
+let errorDiv;
+let userRadios;
+let viewToggleButtons;
+
+function initDOMElements() {
+  statusText = document.getElementById('status-text');
+  blueprintsContainer = document.getElementById('blueprints-container');
+  loadingSpinner = document.getElementById('loading');
+  errorDiv = document.getElementById('error');
+  userRadios = document.querySelectorAll('input[name="user"]');
+  viewToggleButtons = document.querySelectorAll('.toggle-btn');
+
+  console.log('✓ DOM elements initialized');
+  console.log('  - statusText:', !!statusText);
+  console.log('  - blueprintsContainer:', !!blueprintsContainer);
+  console.log('  - loadingSpinner:', !!loadingSpinner);
+  console.log('  - errorDiv:', !!errorDiv);
+  console.log('  - userRadios count:', userRadios.length);
+  console.log('  - viewToggleButtons count:', viewToggleButtons.length);
+}
 
 // ============================================================================
 // Initialization
@@ -40,12 +68,19 @@ const viewToggleButtons = document.querySelectorAll('.toggle-btn');
 
 async function init() {
   try {
+    // Initialize DOM elements first
+    initDOMElements();
+
     showLoading(true);
+    console.log('Init starting...');
 
     // Load blueprint data (use relative path for GitHub Pages compatibility)
+    console.log('Fetching blueprints.json...');
     const blueprintsResponse = await fetch('./blueprints.json');
-    if (!blueprintsResponse.ok) throw new Error('Failed to load blueprints.json');
+    console.log('Blueprint response status:', blueprintsResponse.status);
+    if (!blueprintsResponse.ok) throw new Error(`Failed to load blueprints.json: ${blueprintsResponse.status}`);
     appState.blueprints = await blueprintsResponse.json();
+    console.log('✓ Blueprints loaded:', appState.blueprints.length);
 
     // Initialize user blueprint ownership maps
     USERS.forEach(user => {
@@ -54,12 +89,18 @@ async function init() {
         appState.userBlueprintsOwned[user][bp.id] = false;
       });
     });
+    console.log('✓ User maps initialized');
 
-    // Load user data from Supabase
-    await loadUserBlueprintsFromSupabase();
+    // Load user data from Supabase (with timeout)
+    console.log('Loading user data from Supabase...');
+    const supabaseLoadPromise = loadUserBlueprintsFromSupabase();
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000)); // 3 second timeout
+    await Promise.race([supabaseLoadPromise, timeoutPromise]);
+    console.log('✓ Supabase data loaded (or timeout)');
 
     // Set up event listeners
     setupEventListeners();
+    console.log('✓ Event listeners set up');
 
     // Set initial user if not selected
     if (!appState.currentUser) {
@@ -68,11 +109,13 @@ async function init() {
     }
 
     showLoading(false);
+    console.log('✓ Init complete, rendering...');
     render();
 
   } catch (error) {
+    console.error('✗ Init error:', error);
+    showLoading(false);
     showError(`Initialization error: ${error.message}`);
-    console.error(error);
   }
 }
 
@@ -81,6 +124,7 @@ async function init() {
 // ============================================================================
 
 async function loadUserBlueprintsFromSupabase() {
+  const supabase = getSupabase();
   if (!supabase) {
     console.warn('Supabase not configured, using local state only');
     return;
@@ -111,6 +155,7 @@ async function loadUserBlueprintsFromSupabase() {
 }
 
 async function saveBlueprintToSupabase(userId, blueprintId, owned) {
+  const supabase = getSupabase();
   if (!supabase) {
     console.warn('Supabase not configured, changes are local only');
     return;
@@ -326,10 +371,19 @@ function createBlueprintItem(blueprint) {
 // ============================================================================
 
 function showLoading(show) {
+  if (!loadingSpinner) {
+    console.warn('Loading spinner element not found');
+    return;
+  }
+
   if (show) {
     loadingSpinner.removeAttribute('hidden');
+    loadingSpinner.style.display = 'flex';
+    console.log('✓ Showing loading spinner');
   } else {
     loadingSpinner.setAttribute('hidden', '');
+    loadingSpinner.style.display = 'none';
+    console.log('✓ Hiding loading spinner');
   }
 }
 
@@ -345,7 +399,10 @@ function showError(message) {
 // Start the app
 // ============================================================================
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  // Give the Supabase library time to load from CDN
+  setTimeout(init, 100);
+});
 
 
 
