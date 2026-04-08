@@ -270,7 +270,7 @@
     "name": "Blue Light Stick",
     "rarity": "Common",
     "icon_path": "./images/blueprints/39.png",
-    "order_id": 65
+    "order_id": 71
   },
   {
     "id": 40,
@@ -417,7 +417,7 @@
     "name": "Stable Stock II",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/60.png",
-    "order_id": 71
+    "order_id": 65
   },
   {
     "id": 61,
