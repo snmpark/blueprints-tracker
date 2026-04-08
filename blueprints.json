@@ -3,462 +3,539 @@
     "id": 1,
     "name": "Anvil",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/1.png"
+    "icon_path": "./images/blueprints/1.png",
+    "order_id": 37
   },
   {
     "id": 2,
     "name": "Angled Grip II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/2.png"
+    "icon_path": "./images/blueprints/2.png",
+    "order_id": 23
   },
   {
     "id": 3,
     "name": "Angled Grip III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/3.png"
+    "icon_path": "./images/blueprints/3.png",
+    "order_id": 2
   },
   {
     "id": 4,
     "name": "Aphelion",
     "rarity": "Legendary",
-    "icon_path": "./images/blueprints/4.png"
+    "icon_path": "./images/blueprints/4.png",
+    "order_id": 25
   },
   {
     "id": 5,
     "name": "Barricade Kit",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/5.png"
+    "icon_path": "./images/blueprints/5.png",
+    "order_id": 45
   },
   {
     "id": 6,
     "name": "Bettina",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/6.png"
+    "icon_path": "./images/blueprints/6.png",
+    "order_id": 56
   },
   {
     "id": 7,
     "name": "Blaze Grenade",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/7.png"
+    "icon_path": "./images/blueprints/7.png",
+    "order_id": 65
   },
   {
     "id": 8,
     "name": "Bobcat",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/8.png"
+    "icon_path": "./images/blueprints/8.png",
+    "order_id": 13
   },
   {
     "id": 9,
     "name": "Burletta",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/9.png"
+    "icon_path": "./images/blueprints/9.png",
+    "order_id": 74
   },
   {
     "id": 10,
     "name": "Canto",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/10.png"
+    "icon_path": "./images/blueprints/10.png",
+    "order_id": 55
   },
   {
     "id": 11,
     "name": "Combat Mk. 3 (Aggressive)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/11.png"
+    "icon_path": "./images/blueprints/11.png",
+    "order_id": 49
   },
   {
     "id": 12,
     "name": "Combat Mk. 3 (Flanking)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/12.png"
+    "icon_path": "./images/blueprints/12.png",
+    "order_id": 30
   },
   {
     "id": 13,
     "name": "Compensator II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/13.png"
+    "icon_path": "./images/blueprints/13.png",
+    "order_id": 7
   },
   {
     "id": 14,
     "name": "Compensator III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/14.png"
+    "icon_path": "./images/blueprints/14.png",
+    "order_id": 41
   },
   {
     "id": 15,
     "name": "Complex Gun Parts",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/15.png"
+    "icon_path": "./images/blueprints/15.png",
+    "order_id": 62
   },
   {
     "id": 16,
     "name": "Dolabra",
     "rarity": "Legendary",
-    "icon_path": "./images/blueprints/16.png"
+    "icon_path": "./images/blueprints/16.png",
+    "order_id": 18
   },
   {
     "id": 17,
     "name": "Deadline",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/17.png"
+    "icon_path": "./images/blueprints/17.png",
+    "order_id": 35
   },
   {
     "id": 18,
     "name": "Defibrillator",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/18.png"
+    "icon_path": "./images/blueprints/18.png",
+    "order_id": 14
   },
   {
     "id": 19,
     "name": "Explosive Mine",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/19.png"
+    "icon_path": "./images/blueprints/19.png",
+    "order_id": 63
   },
   {
     "id": 20,
     "name": "Extended Barrel",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/20.png"
+    "icon_path": "./images/blueprints/20.png",
+    "order_id": 73
   },
   {
     "id": 21,
     "name": "Extended Light Magazine II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/21.png"
+    "icon_path": "./images/blueprints/21.png",
+    "order_id": 20
   },
   {
     "id": 22,
     "name": "Extended Light Magazine III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/22.png"
+    "icon_path": "./images/blueprints/22.png",
+    "order_id": 51
   },
   {
     "id": 23,
     "name": "Extended Medium Magazine II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/23.png"
+    "icon_path": "./images/blueprints/23.png",
+    "order_id": 16
   },
   {
     "id": 24,
     "name": "Extended Medium Magazine III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/24.png"
+    "icon_path": "./images/blueprints/24.png",
+    "order_id": 47
   },
   {
     "id": 25,
     "name": "Extended Shotgun Magazine II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/25.png"
+    "icon_path": "./images/blueprints/25.png",
+    "order_id": 40
   },
   {
     "id": 26,
     "name": "Extended Shotgun Magazine III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/26.png"
+    "icon_path": "./images/blueprints/26.png",
+    "order_id": 1
   },
   {
     "id": 27,
     "name": "Equalizer",
     "rarity": "Legendary",
-    "icon_path": "./images/blueprints/27.png"
+    "icon_path": "./images/blueprints/27.png",
+    "order_id": 75
   },
   {
     "id": 28,
     "name": "Fireworks Box",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/28.png"
+    "icon_path": "./images/blueprints/28.png",
+    "order_id": 57
   },
   {
     "id": 29,
     "name": "Gas Mine",
     "rarity": "Common",
-    "icon_path": "./images/blueprints/29.png"
+    "icon_path": "./images/blueprints/29.png",
+    "order_id": 58
   },
   {
     "id": 30,
     "name": "Heavy Gun Parts",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/30.png"
+    "icon_path": "./images/blueprints/30.png",
+    "order_id": 54
   },
   {
     "id": 31,
     "name": "Hullcracker",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/31.png"
+    "icon_path": "./images/blueprints/31.png",
+    "order_id": 33
   },
   {
     "id": 32,
     "name": "Il Toro",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/32.png"
+    "icon_path": "./images/blueprints/32.png",
+    "order_id": 52
   },
   {
     "id": 33,
     "name": "Jolt Mine",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/33.png"
+    "icon_path": "./images/blueprints/33.png",
+    "order_id": 32
   },
   {
     "id": 34,
     "name": "Jupiter",
     "rarity": "Legendary",
-    "icon_path": "./images/blueprints/34.png"
+    "icon_path": "./images/blueprints/34.png",
+    "order_id": 15
   },
   {
     "id": 35,
     "name": "Light Gun Parts",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/35.png"
+    "icon_path": "./images/blueprints/35.png",
+    "order_id": 50
   },
   {
     "id": 36,
     "name": "Red Light Stick",
     "rarity": "Common",
-    "icon_path": "./images/blueprints/36.png"
+    "icon_path": "./images/blueprints/36.png",
+    "order_id": 5
   },
   {
     "id": 37,
     "name": "Green Light Stick",
     "rarity": "Common",
-    "icon_path": "./images/blueprints/37.png"
+    "icon_path": "./images/blueprints/37.png",
+    "order_id": 46
   },
   {
     "id": 38,
     "name": "Yellow Light Stick",
     "rarity": "Common",
-    "icon_path": "./images/blueprints/38.png"
+    "icon_path": "./images/blueprints/38.png",
+    "order_id": 59
   },
   {
     "id": 39,
     "name": "Blue Light Stick",
     "rarity": "Common",
-    "icon_path": "./images/blueprints/39.png"
+    "icon_path": "./images/blueprints/39.png",
+    "order_id": 70
   },
   {
     "id": 40,
     "name": "Lightweight Stock",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/40.png"
+    "icon_path": "./images/blueprints/40.png",
+    "order_id": 43
   },
   {
     "id": 41,
     "name": "Looting Mk. 3 (Safekeeper)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/41.png"
+    "icon_path": "./images/blueprints/41.png",
+    "order_id": 60
   },
   {
     "id": 42,
     "name": "Looting Mk. 3 (Survivor)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/42.png"
+    "icon_path": "./images/blueprints/42.png",
+    "order_id": 39
   },
   {
     "id": 43,
     "name": "Lure Grenade",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/43.png"
+    "icon_path": "./images/blueprints/43.png",
+    "order_id": 48
   },
   {
     "id": 44,
     "name": "Medium Gun Parts",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/44.png"
+    "icon_path": "./images/blueprints/44.png",
+    "order_id": 11
   },
   {
     "id": 45,
     "name": "Muzzle Brake II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/45.png"
+    "icon_path": "./images/blueprints/45.png",
+    "order_id": 72
   },
   {
     "id": 46,
     "name": "Muzzle Brake III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/46.png"
+    "icon_path": "./images/blueprints/46.png",
+    "order_id": 8
   },
   {
     "id": 47,
     "name": "Osprey",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/47.png"
+    "icon_path": "./images/blueprints/47.png",
+    "order_id": 38
   },
   {
     "id": 48,
     "name": "Padded Stock",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/48.png"
+    "icon_path": "./images/blueprints/48.png",
+    "order_id": 53
   },
   {
     "id": 49,
     "name": "Pulse Mine",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/49.png"
+    "icon_path": "./images/blueprints/49.png",
+    "order_id": 3
   },
   {
     "id": 50,
     "name": "Remote Raider Flare",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/50.png"
+    "icon_path": "./images/blueprints/50.png",
+    "order_id": 22
   },
   {
     "id": 51,
     "name": "Seeker Grenade",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/51.png"
+    "icon_path": "./images/blueprints/51.png",
+    "order_id": 67
   },
   {
     "id": 52,
     "name": "Shotgun Choke II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/52.png"
+    "icon_path": "./images/blueprints/52.png",
+    "order_id": 36
   },
   {
     "id": 53,
     "name": "Shotgun Choke III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/53.png"
+    "icon_path": "./images/blueprints/53.png",
+    "order_id": 69
   },
   {
     "id": 54,
     "name": "Shotgun Silencer",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/54.png"
+    "icon_path": "./images/blueprints/54.png",
+    "order_id": 19
   },
   {
     "id": 55,
     "name": "Showstopper",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/55.png"
+    "icon_path": "./images/blueprints/55.png",
+    "order_id": 21
   },
   {
     "id": 56,
     "name": "Silencer I",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/56.png"
+    "icon_path": "./images/blueprints/56.png",
+    "order_id": 68
   },
   {
     "id": 57,
     "name": "Silencer II",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/57.png"
+    "icon_path": "./images/blueprints/57.png",
+    "order_id": 4
   },
   {
     "id": 58,
     "name": "Smoke Grenade",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/58.png"
+    "icon_path": "./images/blueprints/58.png",
+    "order_id": 17
   },
   {
     "id": 59,
     "name": "Snap Hook",
     "rarity": "Legendary",
-    "icon_path": "./images/blueprints/59.png"
+    "icon_path": "./images/blueprints/59.png",
+    "order_id": 76
   },
   {
     "id": 60,
     "name": "Stable Stock II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/60.png"
+    "icon_path": "./images/blueprints/60.png",
+    "order_id": 77
   },
   {
     "id": 61,
     "name": "Stable Stock III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/61.png"
+    "icon_path": "./images/blueprints/61.png",
+    "order_id": 24
   },
   {
     "id": 62,
     "name": "Surge Coil",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/62.png"
+    "icon_path": "./images/blueprints/62.png",
+    "order_id": 61
   },
   {
     "id": 63,
     "name": "Tactical Mk. 3 (Defensive)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/63.png"
+    "icon_path": "./images/blueprints/63.png",
+    "order_id": 9
   },
   {
     "id": 64,
     "name": "Tactical Mk. 3 (Healing)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/64.png"
+    "icon_path": "./images/blueprints/64.png",
+    "order_id": 27
   },
   {
     "id": 65,
     "name": "Tactical Mk. 3 (Revival)",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/65.png"
+    "icon_path": "./images/blueprints/65.png",
+    "order_id": 6
   },
   {
     "id": 66,
     "name": "Tagging Grenade",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/66.png"
+    "icon_path": "./images/blueprints/66.png",
+    "order_id": 12
   },
   {
     "id": 67,
     "name": "Tempest",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/67.png"
+    "icon_path": "./images/blueprints/67.png",
+    "order_id": 26
   },
   {
     "id": 68,
     "name": "Torrente",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/68.png"
+    "icon_path": "./images/blueprints/68.png",
+    "order_id": 31
   },
   {
     "id": 69,
     "name": "Trailblazer",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/69.png"
+    "icon_path": "./images/blueprints/69.png",
+    "order_id": 44
   },
   {
     "id": 70,
     "name": "Trigger 'Nade",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/70.png"
+    "icon_path": "./images/blueprints/70.png",
+    "order_id": 66
   },
   {
     "id": 71,
     "name": "Venator",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/71.png"
+    "icon_path": "./images/blueprints/71.png",
+    "order_id": 64
   },
   {
     "id": 72,
     "name": "Vertical Grip II",
     "rarity": "Uncommon",
-    "icon_path": "./images/blueprints/72.png"
+    "icon_path": "./images/blueprints/72.png",
+    "order_id": 71
   },
   {
     "id": 73,
     "name": "Vertical Grip III",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/73.png"
+    "icon_path": "./images/blueprints/73.png",
+    "order_id": 28
   },
   {
     "id": 74,
     "name": "Vita Shot",
     "rarity": "Rare",
-    "icon_path": "./images/blueprints/74.png"
+    "icon_path": "./images/blueprints/74.png",
+    "order_id": 34
   },
   {
     "id": 75,
     "name": "Vita Spray",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/75.png"
+    "icon_path": "./images/blueprints/75.png",
+    "order_id": 10
   },
   {
     "id": 76,
     "name": "Vulcano",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/76.png"
+    "icon_path": "./images/blueprints/76.png",
+    "order_id": 42
   },
   {
     "id": 77,
     "name": "Wolfpack",
     "rarity": "Epic",
-    "icon_path": "./images/blueprints/77.png"
+    "icon_path": "./images/blueprints/77.png",
+    "order_id": 29
   }
 ]

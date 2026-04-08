@@ -2,7 +2,7 @@
 // Arc Raiders Blueprint Tracker - Frontend JavaScript
 // ============================================================================
 
-const USERS = ['aleks', 'rudi', 'publicsweatyvoid'];
+const USERS = ['aleks', 'rudi', 'publicsweatyvoid', 'chrischtn'];
 
 // Supabase instance (initialized after library loads)
 // Don't declare as 'let supabase' because the library already creates window.supabase
@@ -92,13 +92,12 @@ let userRadios;
 let viewToggleButtons;
 
 function initDOMElements() {
-   statusText = document.getElementById('status-text');
-   blueprintsContainer = document.getElementById('blueprints-container');
-   loadingSpinner = document.getElementById('loading');
-   errorDiv = document.getElementById('error');
-   userRadios = document.querySelectorAll('input[name="user"]');
-   viewToggleButtons = document.querySelectorAll('.toggle-btn');
- }
+    statusText = document.getElementById('status-text');
+    blueprintsContainer = document.getElementById('blueprints-container');
+    loadingSpinner = document.getElementById('loading');
+    errorDiv = document.getElementById('error');
+    viewToggleButtons = document.querySelectorAll('.toggle-btn');
+  }
 
 // ============================================================================
 // Initialization
@@ -132,14 +131,14 @@ async function init() {
      // Set up event listeners
      setupEventListeners();
 
-     // Set initial user if not selected
-     if (!appState.currentUser) {
-       appState.currentUser = USERS[0];
-       userRadios[0].checked = true;
-     }
+      // Set initial user if not selected
+      if (!appState.currentUser) {
+        appState.currentUser = USERS[0];
+        updateUserButtonStates();
+      }
 
-     showLoading(false);
-     render();
+      showLoading(false);
+      render();
 
    } catch (error) {
      console.error('Initialization error:', error);
@@ -217,55 +216,91 @@ async function saveBlueprintToSupabase(userId, blueprintId, owned) {
 // ============================================================================
 
 function setupEventListeners() {
-   // User selection
-   userRadios.forEach(radio => {
-     radio.addEventListener('change', (e) => {
-       appState.currentUser = e.target.value;
-       // Keep the current view mode (don't reset to my-blueprints)
-       appState.filterUser = null;
-       updateViewToggleButtons();
-       updateBlueprintOwnershipDisplay();
-       updateStatusMessage();
-     });
-   });
-
-      // Missing blueprints toggle button - using event delegation
-    document.addEventListener('click', (e) => {
-      if (e.target && e.target.id === 'missing-btn') {
+    // User selection buttons
+    document.querySelectorAll('.user-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Toggle between my-blueprints and missing modes
-        appState.viewMode = appState.viewMode === 'missing' ? 'my-blueprints' : 'missing';
+        appState.currentUser = btn.dataset.user;
+        appState.filterUser = null;
+        updateUserButtonStates();
         updateViewToggleButtons();
-        render();
-      }
+        updateBlueprintOwnershipDisplay();
+        updateStatusMessage();
+        renderOverview();
+      });
+    });
 
-       // Unlock button toggle
-       if (e.target && e.target.id === 'unlock-btn') {
+       // Missing blueprints toggle button - using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target && e.target.id === 'missing-btn') {
          e.preventDefault();
-         appState.isLocked = !appState.isLocked;
+         // Toggle between my-blueprints and missing modes
+         appState.viewMode = appState.viewMode === 'missing' ? 'my-blueprints' : 'missing';
          updateViewToggleButtons();
+         render();
        }
 
-       // Changelog button
-       if (e.target && e.target.id === 'changelog-btn') {
-         e.preventDefault();
-         showChangelogModal();
-       }
+         // Unlock button toggle
+         if (e.target && e.target.id === 'unlock-btn') {
+           e.preventDefault();
+           appState.isLocked = !appState.isLocked;
+           updateViewToggleButtons();
+         }
 
-       // Close changelog modal
-       if (e.target && e.target.id === 'changelog-close') {
-         e.preventDefault();
-         closeChangelogModal();
-       }
+         // Changelog button
+         if (e.target && e.target.id === 'changelog-btn') {
+           e.preventDefault();
+           showChangelogModal();
+         }
 
-       // Close modal if clicking outside
-       if (e.target && e.target.id === 'changelog-modal') {
-         closeChangelogModal();
-       }
-     });
+         // Close changelog modal
+         if (e.target && e.target.id === 'changelog-close') {
+           e.preventDefault();
+           closeChangelogModal();
+         }
 
-   // Blueprint item clicks - handled in renderBlueprints
- }
+         // Close modal if clicking outside
+         if (e.target && e.target.id === 'changelog-modal') {
+           closeChangelogModal();
+         }
+
+         // Overview toggle button - use closest to handle clicks on child elements
+         const overviewBtn = e.target.closest('#overview-toggle');
+         if (overviewBtn) {
+           e.preventDefault();
+           toggleOverviewCollapse();
+         }
+       });
+
+     // Blueprint item clicks - handled in renderBlueprints
+   }
+
+function updateUserButtonStates() {
+  document.querySelectorAll('.user-btn').forEach(btn => {
+    if (btn.dataset.user === appState.currentUser) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+function toggleOverviewCollapse() {
+  const toggleBtn = document.getElementById('overview-toggle');
+  const content = document.getElementById('overview-content');
+
+  if (!toggleBtn || !content) return;
+
+  const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+
+  if (isExpanded) {
+    content.classList.add('collapsed');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  } else {
+    content.classList.remove('collapsed');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+  }
+}
 
 function updateViewToggleButtons() {
    const missingBtn = document.getElementById('missing-btn');
@@ -304,8 +339,8 @@ function updateBlueprintOwnershipDisplay() {
     const blueprintId = parseInt(item.dataset.blueprintId);
     const isOwned = appState.userBlueprintsOwned[appState.currentUser][blueprintId];
 
-    // Remove all user-specific classes
-    item.classList.remove('owned-aleks', 'owned-rudi', 'owned-publicsweatyvoid');
+     // Remove all user-specific classes
+     item.classList.remove('owned-aleks', 'owned-rudi', 'owned-publicsweatyvoid', 'owned-chrischtn');
 
     // Update checkbox
     const checkbox = item.querySelector('.blueprint-checkbox');
@@ -372,27 +407,156 @@ function escapeHtml(text) {
 // ============================================================================
 
 function render() {
-  updateStatusMessage();
-  renderBlueprints();
-}
+   updateStatusMessage();
+   renderOverview();
+   renderBlueprints();
+ }
 
 function updateStatusMessage() {
-   if (!appState.currentUser) {
-     statusText.textContent = 'Select a user to get started';
-     return;
-   }
+    if (!appState.currentUser) {
+      statusText.textContent = 'Select a user to get started';
+      return;
+    }
 
-   if (appState.viewMode === 'my-blueprints') {
-     const owned = Object.values(appState.userBlueprintsOwned[appState.currentUser])
-       .filter(Boolean).length;
-     statusText.textContent = `${appState.currentUser} - ${owned} blueprint(s) owned`;
-   } else if (appState.viewMode === 'missing') {
-     const missing = appState.blueprints.filter(bp =>
-       !appState.userBlueprintsOwned[appState.currentUser][bp.id]
-     ).length;
-     statusText.textContent = `${appState.currentUser} - ${missing} blueprint(s) missing`;
-   }
- }
+    if (appState.viewMode === 'my-blueprints') {
+      const owned = Object.values(appState.userBlueprintsOwned[appState.currentUser])
+        .filter(Boolean).length;
+      statusText.textContent = `${appState.currentUser} - ${owned} blueprint(s) owned`;
+    } else if (appState.viewMode === 'missing') {
+      const missing = appState.blueprints.filter(bp =>
+        !appState.userBlueprintsOwned[appState.currentUser][bp.id]
+      ).length;
+      statusText.textContent = `${appState.currentUser} - ${missing} blueprint(s) missing`;
+    }
+  }
+
+function renderOverview() {
+  const overviewSection = document.getElementById('overview-section');
+  const overviewContainer = document.getElementById('overview-container');
+
+  if (!overviewSection || !overviewContainer || !appState.currentUser) return;
+
+  // Show overview only when on my-blueprints view mode
+  if (appState.viewMode !== 'my-blueprints') {
+    overviewSection.setAttribute('hidden', '');
+    return;
+  }
+
+  overviewSection.removeAttribute('hidden');
+  overviewContainer.innerHTML = '';
+
+  // Sort all blueprints by order_id once
+  const sortedBlueprints = appState.blueprints.sort((a, b) => (a.order_id || 0) - (b.order_id || 0));
+
+  // Render overview for current user only
+  const user = appState.currentUser;
+
+  // Create user grid section
+  const userGrid = document.createElement('div');
+  userGrid.className = 'overview-user-grid';
+
+  // User label
+  const userLabel = document.createElement('div');
+  userLabel.className = 'overview-user-label';
+  userLabel.textContent = user;
+  userGrid.appendChild(userLabel);
+
+  // Grid container
+  const grid = document.createElement('div');
+  grid.className = 'overview-grid';
+
+   // Add all blueprints in order, showing owned ones or empty spaces
+   sortedBlueprints.forEach((blueprint, index) => {
+     const isOwned = appState.userBlueprintsOwned[user][blueprint.id];
+
+     if (isOwned) {
+       // Show owned blueprint
+       const item = document.createElement('div');
+       item.className = `overview-blueprint-item owned-${user}`;
+       item.dataset.blueprintId = blueprint.id;
+       item.title = blueprint.name;
+
+       const icon = document.createElement('img');
+       icon.className = 'overview-blueprint-icon';
+       icon.src = blueprint.icon_path;
+       icon.alt = blueprint.name;
+       item.appendChild(icon);
+
+       // Add checkmark to top right
+       const checkmark = document.createElement('div');
+       checkmark.className = 'overview-blueprint-checkmark';
+       checkmark.textContent = '✓';
+       item.appendChild(checkmark);
+
+       // Add long-press handler for owned blueprint
+       addOverviewLongPressHandler(item, blueprint.name);
+
+       grid.appendChild(item);
+     } else {
+       // Create empty placeholder to maintain grid structure
+       const emptyItem = document.createElement('div');
+       emptyItem.className = 'overview-blueprint-item overview-empty-slot';
+
+       // Add long-press handler for empty slot to show what should be there
+       addOverviewLongPressHandler(emptyItem, `${blueprint.name} (Missing)`);
+
+       grid.appendChild(emptyItem);
+     }
+   });
+
+  userGrid.appendChild(grid);
+  overviewContainer.appendChild(userGrid);
+}
+
+function addOverviewLongPressHandler(element, blueprintName) {
+  let touchTimer;
+  let touchStarted = false;
+
+  element.addEventListener('touchstart', (e) => {
+    touchStarted = true;
+    touchTimer = setTimeout(() => {
+      if (!touchStarted) return;
+
+      // Show large popup on long-press
+      const popup = document.createElement('div');
+      popup.className = 'blueprint-popup';
+      popup.textContent = blueprintName;
+      document.body.appendChild(popup);
+
+      // Hide popup on tap or after timeout
+      const hidePopup = () => {
+        if (popup.parentNode) {
+          popup.remove();
+        }
+        document.removeEventListener('click', hidePopup);
+        document.removeEventListener('touchstart', hidePopup);
+      };
+
+      document.addEventListener('click', hidePopup);
+      document.addEventListener('touchstart', hidePopup);
+
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        if (popup.parentNode) popup.remove();
+      }, 5000);
+    }, 500); // 500ms long-press
+  }, false);
+
+  element.addEventListener('touchend', () => {
+    touchStarted = false;
+    clearTimeout(touchTimer);
+  }, false);
+
+  element.addEventListener('touchmove', () => {
+    touchStarted = false;
+    clearTimeout(touchTimer);
+  }, false);
+
+  element.addEventListener('touchcancel', () => {
+    touchStarted = false;
+    clearTimeout(touchTimer);
+  }, false);
+}
 
 function renderBlueprints() {
    blueprintsContainer.innerHTML = '';
