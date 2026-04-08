@@ -46,7 +46,7 @@
     "name": "Blaze Grenade",
     "rarity": "Rare",
     "icon_path": "./images/blueprints/7.png",
-    "order_id": 65
+    "order_id": 66
   },
   {
     "id": 8,
@@ -60,7 +60,7 @@
     "name": "Burletta",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/9.png",
-    "order_id": 74
+    "order_id": 75
   },
   {
     "id": 10,
@@ -137,7 +137,7 @@
     "name": "Extended Barrel",
     "rarity": "Epic",
     "icon_path": "./images/blueprints/20.png",
-    "order_id": 73
+    "order_id": 74
   },
   {
     "id": 21,
@@ -186,7 +186,7 @@
     "name": "Equalizer",
     "rarity": "Legendary",
     "icon_path": "./images/blueprints/27.png",
-    "order_id": 75
+    "order_id": 76
   },
   {
     "id": 28,
@@ -270,7 +270,7 @@
     "name": "Blue Light Stick",
     "rarity": "Common",
     "icon_path": "./images/blueprints/39.png",
-    "order_id": 70
+    "order_id": 65
   },
   {
     "id": 40,
@@ -312,7 +312,7 @@
     "name": "Muzzle Brake II",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/45.png",
-    "order_id": 72
+    "order_id": 73
   },
   {
     "id": 46,
@@ -354,7 +354,7 @@
     "name": "Seeker Grenade",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/51.png",
-    "order_id": 67
+    "order_id": 68
   },
   {
     "id": 52,
@@ -368,7 +368,7 @@
     "name": "Shotgun Choke III",
     "rarity": "Rare",
     "icon_path": "./images/blueprints/53.png",
-    "order_id": 69
+    "order_id": 70
   },
   {
     "id": 54,
@@ -389,7 +389,7 @@
     "name": "Silencer I",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/56.png",
-    "order_id": 68
+    "order_id": 69
   },
   {
     "id": 57,
@@ -410,14 +410,14 @@
     "name": "Snap Hook",
     "rarity": "Legendary",
     "icon_path": "./images/blueprints/59.png",
-    "order_id": 76
+    "order_id": 77
   },
   {
     "id": 60,
     "name": "Stable Stock II",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/60.png",
-    "order_id": 77
+    "order_id": 71
   },
   {
     "id": 61,
@@ -487,7 +487,7 @@
     "name": "Trigger 'Nade",
     "rarity": "Rare",
     "icon_path": "./images/blueprints/70.png",
-    "order_id": 66
+    "order_id": 67
   },
   {
     "id": 71,
@@ -501,7 +501,7 @@
     "name": "Vertical Grip II",
     "rarity": "Uncommon",
     "icon_path": "./images/blueprints/72.png",
-    "order_id": 71
+    "order_id": 72
   },
   {
     "id": 73,
