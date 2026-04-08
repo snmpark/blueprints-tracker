@@ -7,6 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>BeBlueprintsTracker</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%23FF8000'>📋</text></svg>">
   <link rel="preload" href="styles.css" as="style">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -30,30 +31,30 @@
        </div>
      </header>
 
-    <main class="main-content" role="main">
-     <!-- Overview Section -->
-     <div id="overview-section" class="overview-section" hidden>
-       <button id="overview-toggle" class="overview-toggle-btn" type="button" aria-expanded="true" aria-label="Toggle blueprint overview">
-         <span class="overview-toggle-icon">▼</span>
-         <span class="overview-toggle-text">Blueprint Overview</span>
-       </button>
-       <div id="overview-content" class="overview-content">
+      <main class="main-content" role="main">
+       <!-- View Toggle Buttons (Above Overview) -->
+       <div class="view-toggle-above" role="group" aria-label="View mode">
+         <button class="toggle-btn active" id="overview-view-btn" type="button" aria-pressed="true" title="Show overview grid">Overview</button>
+         <button class="toggle-btn" id="list-view-btn" type="button" aria-pressed="false" title="Show list view">List</button>
+         <button class="toggle-btn" id="missing-view-btn" type="button" aria-pressed="false" title="Show missing blueprints">Missing</button>
+       </div>
+
+       <!-- Unlock Button Row -->
+       <div class="unlock-row" role="group" aria-label="Lock state">
+         <button class="toggle-btn" id="unlock-btn" type="button" aria-pressed="false" title="Unlock to allow changes">🔒</button>
+       </div>
+
+       <!-- Overview Section -->
+       <div id="overview-section" class="overview-section">
          <div id="overview-container" class="overview-container">
            <!-- Overview will be rendered here by JavaScript -->
          </div>
        </div>
-     </div>
 
-     <!-- View Toggle Buttons (Below Overview) -->
-     <div class="view-toggle-below" role="group" aria-label="View filter">
-       <button class="toggle-btn" id="missing-btn" type="button" data-view="missing" aria-pressed="false">Missing Blueprints</button>
-       <button class="toggle-btn" id="unlock-btn" type="button" aria-pressed="false" title="Unlock to allow changes">🔒 Locked</button>
-     </div>
-
-     <!-- Main Blueprints Section -->
-     <div id="blueprints-container" class="blueprints-container">
-       <!-- Blueprints will be rendered here by JavaScript -->
-     </div>
+      <!-- Main Blueprints Section -->
+      <div id="blueprints-container" class="blueprints-container" hidden>
+        <!-- Blueprints will be rendered here by JavaScript -->
+      </div>
 
     <div id="loading" class="loading-spinner" hidden>
       <div class="spinner"></div>
@@ -78,10 +79,11 @@
         </div>
       </div>
     </div>
+   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="script.js"></script>
-  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
 
