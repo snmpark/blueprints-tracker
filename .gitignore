@@ -9,3 +9,7 @@ config.js
 dist/
 build/
 
+
+# Python utility scripts
+insert-blueprint.py
+order-blueprints.py

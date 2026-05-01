@@ -41,21 +41,11 @@ CREATE TABLE users (
 INSERT INTO users (id) VALUES ('aleks'), ('rudi'), ('publicsweatyvoid'), ('chrischtn');
 ```
 
-**blueprints table:**
-```sql
-CREATE TABLE blueprints (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  rarity TEXT NOT NULL,
-  icon_path TEXT NOT NULL
-);
-```
-
 **user_blueprints table:**
 ```sql
 CREATE TABLE user_blueprints (
   user_id TEXT NOT NULL REFERENCES users(id),
-  blueprint_id INTEGER NOT NULL REFERENCES blueprints(id),
+  blueprint_id INTEGER NOT NULL,
   owned BOOLEAN DEFAULT FALSE,
   updated_at TIMESTAMP DEFAULT NOW(),
   PRIMARY KEY (user_id, blueprint_id)
@@ -137,6 +127,46 @@ blueprints-tracker/
 - 🔵 **Rare** - Blue (#0070DD)
 - 🟣 **Epic** - Purple (#A335EE)
 - 🟠 **Legendary** - Orange (#FF8000)
+
+## Adding New Blueprints
+
+When Arc Raiders releases new blueprints, follow this process:
+
+### 1. Prepare Blueprint Images
+
+1. Download or screenshot the blueprint icon
+2. Save as PNG format: `images/blueprints/<id>.png`
+3. Size: 64×64 pixels (or scale down if needed)
+
+### 2. Add Blueprint to Data
+
+Edit `blueprints.json` directly and add a new object with the following structure:
+
+```json
+{
+  "id": 82,
+  "name": "New Blueprint Name",
+  "rarity": "Rare",
+  "icon_path": "./images/blueprints/82.png",
+  "order_id": 1350
+}
+```
+
+**How to choose `order_id`:** Use the midpoint between two existing items to avoid cascading updates:
+- Between 1300 (Crash Mat) and 1400 (Bobcat) → insert at **1350**
+- Between 2500 and 2600 → insert at **2550**
+
+**Valid Rarities:** Common, Uncommon, Rare, Epic, Legendary
+
+### 3. Commit & Deploy
+
+```bash
+git add blueprints.json images/blueprints/<id>.png
+git commit -m "Add new blueprints: New Item 1, New Item 2, New Item 3"
+git push origin main
+```
+
+Changes will be live on GitHub Pages within 1-2 minutes.
 
 ## Development
 
