@@ -406,6 +406,13 @@
     "order_id": 5800
   },
   {
+    "id": 83,
+    "name": "Rascal",
+    "rarity": "Rare",
+    "icon_path": "./images/blueprints/83.png",
+    "order_id": 5801
+  },
+  {
     "id": 10,
     "name": "Canto",
     "rarity": "Rare",
@@ -532,6 +539,13 @@
     "order_id": 7600
   },
   {
+    "id": 82,
+    "name": "Extended Barrel II",
+    "rarity": "Rare",
+    "icon_path": "./images/blueprints/82.png",
+    "order_id": 7601
+  },
+  {
     "id": 45,
     "name": "Muzzle Brake II",
     "rarity": "Uncommon",
@@ -540,7 +554,7 @@
   },
   {
     "id": 20,
-    "name": "Extended Barrel",
+    "name": "Extended Barrel III",
     "rarity": "Epic",
     "icon_path": "./images/blueprints/20.png",
     "order_id": 7800
