@@ -1,7 +1,7 @@
 # Arc Raiders Blueprint Tracker
 
 A mobile-first web app where you and your friends can track which Arc Raiders blueprints you've collected. Built with vanilla JavaScript, Supabase for persistence, and GitHub Pages for hosting.
-
+  
 ## Features
 
 ✅ **Mobile-First Design** - Optimized for phones, tablets, and desktops  
